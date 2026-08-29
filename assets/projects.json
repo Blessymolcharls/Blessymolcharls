@@ -1,0 +1,21 @@
+{
+  "_comment": "Featured repositories. 'repo' must match the exact GitHub repo name.",
+  "projects": [
+    {
+      "repo": "JanSetu",
+      "description": "AI-powered civic-tech platform that makes government application workflows transparent and citizen-friendly."
+    },
+    {
+      "repo": "wizards-duel",
+      "description": "Gesture-controlled wizard battle game using MediaPipe and computer vision — because mice are too Muggle."
+    },
+    {
+      "repo": "StudySync",
+      "description": "Role-based study management platform with PDF sharing, task scheduling and JDBC/MariaDB backend. Led a 4-member team."
+    },
+    {
+      "repo": "VendorVerse",
+      "description": "Full-stack vendor management platform with REST APIs, authentication and dynamic data rendering."
+    }
+  ]
+}

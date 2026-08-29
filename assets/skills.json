@@ -1,0 +1,14 @@
+{
+  "title": "WHAT I THINK I KNOW",
+  "_comment": "Self-rated skill axes for the radar chart. Values are 0-100. Edit freely.",
+  "axes": [
+    { "label": "Python",          "value": 82 },
+    { "label": "Java",            "value": 78 },
+    { "label": "C / C++",         "value": 75 },
+    { "label": "Web / APIs",      "value": 76 },
+    { "label": "AI / ML",         "value": 72 },
+    { "label": "Computer Vision", "value": 68 },
+    { "label": "IoT / Embedded",  "value": 65 },
+    { "label": "DSA",             "value": 74 }
+  ]
+}
