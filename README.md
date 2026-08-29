@@ -4,7 +4,7 @@
 
 ### `COMPUTER SCIENCE × AI × MAGIC`
 
-<img src="assets/portrait.svg" width="280" alt="Blessy — dot-matrix portrait">
+<img src="assets/portrait.svg?v=4865314" width="280" alt="Blessy — dot-matrix portrait">
 
 <br>
 
