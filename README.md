@@ -8,7 +8,7 @@
 
 <br>
 
-<img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=20&duration=2500&pause=800&color=AE0001&center=true&vCenter=true&width=640&lines=Blessy+Mol+Charls;Computer+Science+%C3%97+AI;Building+things+with+code;Brewing+questionable+ideas;Teaching+computers+a+little+magic;Currently+casting%3A+JanSetu" alt="Typing animation">
+<img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=20&duration=2500&pause=800&color=AE0001&center=true&vCenter=true&width=640&lines=Blessy+Mol+Charls;Computer+Science+%C3%97+AI;Building+things+with+code;Brewing+questionable+ideas;Teaching+computers+a+little+magic;Currently+casting%3A+Wizard+Chess" alt="Typing animation">
 
 <br><br>
 
@@ -81,25 +81,24 @@ I like it here.
 
 <div align="center">
 
-<!-- JanSetu — centrepiece -->
-<a href="https://github.com/Blessymolcharls/JanSetu">
+<!-- Wizard Chess — centrepiece -->
 <picture>
-  <source media="(prefers-color-scheme: dark)"  srcset="assets/card-jansetu-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="assets/card-jansetu-light.svg">
-  <img src="assets/card-jansetu-dark.svg" width="480" alt="JanSetu project card">
+  <source media="(prefers-color-scheme: dark)"  srcset="assets/card-wizard-chess-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="assets/card-wizard-chess-light.svg">
+  <img src="assets/card-wizard-chess-dark.svg" width="480" alt="Wizard Chess project card">
 </picture>
-</a>
 
 <br><br>
 
-**01 — JANSETU**
+**01 — WIZARD CHESS**
 
-Making government applications less of a black box.
+Bringing Hogwarts chess battles to life in the browser.
 
-AI-powered civic-tech platform designed to make public-service workflows more transparent,
-understandable, and citizen-friendly.
+Integrated **12 custom Harry Potter-themed 3D chess pieces** (modelled from scratch in Blender)
+into an interactive browser-based chessboard using chess.js and chessboard.js.
+Top 6 at College &amp; Top 200 Overall at TinkerHack 3.0.
 
-`Next.js` · `TypeScript` · `AI` · `MongoDB`
+`JavaScript` · `chess.js` · `chessboard.js` · `Blender` · `3D Modeling`
 
 <br>
 
@@ -181,14 +180,11 @@ Full-stack vendor management platform. REST APIs, authentication, dynamic data r
 
 <br>
 
-**HOGWARTS CHESS BATTLE**
+**JANSETU**
 
-I designed **12 Harry Potter-themed 3D chess pieces** in Blender — each one modelled from scratch —
-and then integrated them into a browser-based chess platform using chess.js and chessboard.js.
-This was for a hackathon. We placed **Top 200 overall and Top 6 at college** (TinkerHack 3.0).
-The chess pieces did most of the heavy lifting.
+AI-powered civic-tech platform designed to remove bureaucratic black boxes and make public-service workflows transparent, understandable, and citizen-friendly.
 
-`JavaScript` · `chess.js` · `chessboard.js` · `Blender`
+`Next.js` · `TypeScript` · `AI` · `MongoDB`
 
 <br>
 
@@ -255,17 +251,17 @@ Graphs included. Conclusions were interesting. Sleep was not.
 ```text
 ╭──────────────────────────────────────────────────────╮
 │                                                      │
-│  PROJECT      JANSETU                                │
-│  CATEGORY     AI × CIVIC TECH                        │
-│  OBJECTIVE    Remove the bureaucratic black box      │
-│               Make government forms make sense       │
-│  STATUS       BUILDING                               │
+│  PROJECT      WIZARD CHESS                           │
+│  CATEGORY     3D × BROWSER GAMING                    │
+│  OBJECTIVE    Bring Hogwarts chess battles to life   │
+│               Custom 3D pieces & interactive engine  │
+│  STATUS       TINKERHACK 3.0 TOP 6                   │
 │                                                      │
 │  SIDE QUESTS                                         │
+│  → 3D Modeling (Blender)                             │
 │  → AI / ML                                           │
 │  → Computer Vision                                   │
 │  → Full-stack development                            │
-│  → IoT                                               │
 │  → Making questionable prototypes                    │
 │                                                      │
 ╰──────────────────────────────────────────────────────╯

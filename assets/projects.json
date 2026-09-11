@@ -2,8 +2,9 @@
   "_comment": "Featured repositories. 'repo' must match the exact GitHub repo name.",
   "projects": [
     {
-      "repo": "JanSetu",
-      "description": "AI-powered civic-tech platform that makes government application workflows transparent and citizen-friendly."
+      "repo": "wizard-chess",
+      "description": "3D Harry Potter-themed browser chess game with 12 custom Blender-modelled pieces, chess.js & chessboard.js. Top 6 @ TinkerHack 3.0.",
+      "language": "JavaScript"
     },
     {
       "repo": "wizards-duel",
