@@ -18,7 +18,7 @@
 
 <br>
 
-> *"Mischief"*
+> *"Mischief Managed"*
 
 </div>
 
@@ -288,7 +288,7 @@ Graphs included. Conclusions were interesting. Sleep was not.
 
 <br>
 
-> *"Mischief"*
+> *"Mischief Managed"*
 
 <br>
 
