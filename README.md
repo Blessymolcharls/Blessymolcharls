@@ -70,40 +70,6 @@ I like it here.
 | `ANCIENT RUNES` | DSA · Algorithms · Computer Architecture · gem5 |
 | `ARTIFICIAL MAGIC` | Blender · Figma · Canva · pandas · Matplotlib |
 
----
-
-## `THE SPELLBOOK — SELF ASSESSMENT`
-
-<div align="center">
-
-<table>
-<tr>
-<td width="50%" align="center">
-
-**WHAT I THINK I KNOW**
-
-<picture>
-  <source media="(prefers-color-scheme: dark)"  srcset="assets/radar-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="assets/radar-light.svg">
-  <img src="assets/radar-dark.svg" width="400" alt="Self-rated skill radar">
-</picture>
-
-</td>
-<td width="50%" align="center">
-
-**WHAT THE REPOS SAY**
-
-<picture>
-  <source media="(prefers-color-scheme: dark)"  srcset="assets/radar-langs-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="assets/radar-langs-light.svg">
-  <img src="assets/radar-langs-dark.svg" width="400" alt="GitHub language radar">
-</picture>
-
-</td>
-</tr>
-</table>
-
-</div>
 
 ---
 
