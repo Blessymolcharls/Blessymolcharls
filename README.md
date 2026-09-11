@@ -248,14 +248,15 @@ Graphs included. Conclusions were interesting. Sleep was not.
 
 ## `CURRENT QUEST`
 
+<!-- QUEST:START -->
 ```text
 ╭──────────────────────────────────────────────────────╮
 │                                                      │
-│  PROJECT      WIZARD CHESS                           │
-│  CATEGORY     3D × BROWSER GAMING                    │
-│  OBJECTIVE    Bring Hogwarts chess battles to life   │
-│               Custom 3D pieces & interactive engine  │
-│  STATUS       TINKERHACK 3.0 TOP 6                   │
+│  PROJECT       CARTZO                                │
+│  CATEGORY      JAVASCRIPT × E-COMMERCE               │
+│  OBJECTIVE     Full-stack MERN e-commerce platform   │
+│                with React & Node.js                  │
+│  STATUS        ACTIVE (Updated: Sep 2026)            │
 │                                                      │
 │  SIDE QUESTS                                         │
 │  → 3D Modeling (Blender)                             │
@@ -266,6 +267,7 @@ Graphs included. Conclusions were interesting. Sleep was not.
 │                                                      │
 ╰──────────────────────────────────────────────────────╯
 ```
+<!-- QUEST:END -->
 
 ---
 
