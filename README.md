@@ -244,30 +244,6 @@ Graphs included. Conclusions were interesting. Sleep was not.
 
 </div>
 
----
-
-## `CURRENT QUEST`
-
-<!-- QUEST:START -->
-```text
-╭──────────────────────────────────────────────────────╮
-│                                                      │
-│  PROJECT       CARTZO                                │
-│  CATEGORY      JAVASCRIPT × E-COMMERCE               │
-│  OBJECTIVE     Full-stack MERN e-commerce platform   │
-│                with React & Node.js                  │
-│  STATUS        ACTIVE (Updated: Sep 2026)            │
-│                                                      │
-│  SIDE QUESTS                                         │
-│  → 3D Modeling (Blender)                             │
-│  → AI / ML                                           │
-│  → Computer Vision                                   │
-│  → Full-stack development                            │
-│  → Making questionable prototypes                    │
-│                                                      │
-╰──────────────────────────────────────────────────────╯
-```
-<!-- QUEST:END -->
 
 ---
 

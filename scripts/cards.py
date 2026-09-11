@@ -303,125 +303,6 @@ def render_repo(repo, theme):
     return frame(W, H, c, "".join(out), f'{repo["name"]} repository card')
 
 
-# --------------------------------------------------------------------------- #
-
-
-def update_current_quest(repos: list[dict], readme_path: Path):
-    if not readme_path.exists():
-        return
-    # Find most recently pushed non-profile repository
-    non_profile = [r for r in repos if not r.get("fork") and r.get("name", "").lower() != "blessymolcharls"]
-    if not non_profile:
-        return
-    latest = sorted(non_profile, key=lambda r: r.get("pushed_at") or "", reverse=True)[0]
-
-    name = latest["name"]
-    lang = latest.get("language") or "Full-Stack"
-    raw_desc = latest.get("description") or ""
-
-    known = {
-        "cartzo": ("JAVASCRIPT × E-COMMERCE", "Full-stack MERN e-commerce platform with React & Node.js"),
-        "vault-404": ("PYTHON × IOT HARDWARE", "IoT smart safe with RFID & keypad hardware authentication"),
-        "jansetu": ("TYPESCRIPT × CIVIC TECH", "AI-powered civic-tech platform for transparent workflows"),
-        "wizards-duel": ("TYPESCRIPT × COMPUTER VISION", "Gesture-controlled wizard battles with MediaPipe"),
-        "StudySync": ("JAVA × DESKTOP APP", "Role-based study management platform with MariaDB"),
-        "VendorVerse": ("JAVASCRIPT × WEB APPS", "Full-stack vendor management platform with REST APIs"),
-        "MedAlert": ("DART × IOT & BLE", "ESP32 smart pillbox with real-time BLE notifications"),
-        "BookiSH": ("C × CGI BACKEND", "Library management platform with C CGI backend"),
-        "docucharm": ("DART × FLUTTER", "Document management & processing mobile application"),
-        "FocusForge": ("DART × FLUTTER", "Productivity and focus tracking mobile application"),
-        "WanderNote": ("C++ × CROSS-PLATFORM", "Cross-platform note taking and management application"),
-        "Euphoria": ("JAVASCRIPT × MEDIA", "Spotify playlist downloader and media organizer"),
-        "Computer-Vision": ("PYTHON × COMPUTER VISION", "Computer vision experiments & gesture recognition"),
-        "cacheanalysis": ("PYTHON × ARCHITECTURE", "gem5-based computer architecture cache analysis")
-    }
-
-    if name in known:
-        category, desc = known[name]
-    else:
-        category = f"{lang.upper()} × ENGINEERING"
-        desc = raw_desc or f"Active development and feature implementation for {name}."
-
-    pushed = latest.get("pushed_at", "")
-    if pushed:
-        try:
-            dt_obj = dt.datetime.fromisoformat(pushed.replace("Z", "+00:00"))
-            status_date = dt_obj.strftime("%b %Y")
-        except Exception:
-            status_date = "RECENT"
-    else:
-        status_date = "RECENT"
-    status_str = f"ACTIVE (Updated: {status_date})"
-
-    box_inner = 54
-    content_w = 50
-
-    def pad_row(text: str) -> str:
-        return f"│  {text:<{content_w}}  │"
-
-    def pad_empty() -> str:
-        return f"│{' ' * box_inner}│"
-
-    max_desc_w = content_w - 14
-    words = desc.split()
-    lines, cur = [], ""
-    for w in words:
-        trial = f"{cur} {w}".strip()
-        if len(trial) <= max_desc_w or not cur:
-            cur = trial
-        else:
-            lines.append(cur)
-            cur = w
-            if len(lines) == 2:
-                break
-    if cur and len(lines) < 2:
-        lines.append(cur)
-
-    box = [
-        "```text",
-        f"╭{'─' * box_inner}╮",
-        pad_empty(),
-        pad_row(f"{'PROJECT':<14}{name.upper()}"),
-        pad_row(f"{'CATEGORY':<14}{category}"),
-        pad_row(f"{'OBJECTIVE':<14}{lines[0] if lines else desc}"),
-    ]
-    if len(lines) > 1:
-        box.append(pad_row(f"{'':<14}{lines[1]}"))
-    box.extend([
-        pad_row(f"{'STATUS':<14}{status_str}"),
-        pad_empty(),
-        pad_row("SIDE QUESTS"),
-        pad_row("→ 3D Modeling (Blender)"),
-        pad_row("→ AI / ML"),
-        pad_row("→ Computer Vision"),
-        pad_row("→ Full-stack development"),
-        pad_row("→ Making questionable prototypes"),
-        pad_empty(),
-        f"╰{'─' * box_inner}╯",
-        "```"
-    ])
-
-    quest_content = "\n".join(box)
-
-    content = readme_path.read_text(encoding="utf-8")
-    import re
-    if "<!-- QUEST:START -->" in content and "<!-- QUEST:END -->" in content:
-        pattern = r"<!-- QUEST:START -->.*?<!-- QUEST:END -->"
-        replacement = f"<!-- QUEST:START -->\n{quest_content}\n<!-- QUEST:END -->"
-        new_content = re.sub(pattern, replacement, content, flags=re.DOTALL)
-    else:
-        pattern = r"(## `CURRENT QUEST`\s*\n\n)(```text.*?```)"
-        replacement = r"\1<!-- QUEST:START -->\n" + quest_content + r"\n<!-- QUEST:END -->"
-        new_content = re.sub(pattern, replacement, content, flags=re.DOTALL)
-
-    if new_content != content:
-        readme_path.write_text(new_content, encoding="utf-8")
-        print(f"updated Current Quest in README.md with latest repo: {name}")
-
-
-# --------------------------------------------------------------------------- #
-
-
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__,
                                 formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -429,8 +310,6 @@ def main(argv=None):
     p.add_argument("--out", type=Path, default=Path("assets"))
     p.add_argument("--projects", type=Path, default=Path("assets/projects.json"),
                    help="repos to render cards for, with description overrides")
-    p.add_argument("--readme", type=Path, default=Path("README.md"),
-                   help="path to README.md to update Current Quest dynamically")
     args = p.parse_args(argv)
 
     token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
@@ -465,9 +344,6 @@ def main(argv=None):
         dest = args.out / f"card-stats-{theme}.svg"
         dest.write_text(render_stats(args.user, tiles, theme), encoding="utf-8")
     print(f"wrote card-stats-*.svg  ({len(tiles)} tiles)")
-
-    if args.readme:
-        update_current_quest(repos, args.readme)
 
     if not args.projects.exists():
         print(f"no {args.projects}, skipping repo cards")
