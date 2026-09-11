@@ -18,7 +18,7 @@
 
 <br>
 
-> *"I solemnly swear that I am up to no good."*
+> *"Mischief"*
 
 </div>
 
@@ -284,19 +284,11 @@ Graphs included. Conclusions were interesting. Sleep was not.
 
 <br>
 
-```
-  M I S C H I E F   M A N A G E D ?
-```
-
-**Not even close.**
-
-<br>
-
 *⚡ — 🪄 — 💻*
 
 <br>
 
-> *"I solemnly swear that I am up to no good."*
+> *"Mischief"*
 
 <br>
 
