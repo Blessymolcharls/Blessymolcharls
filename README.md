@@ -8,7 +8,7 @@
 
 <br>
 
-<img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=20&duration=2500&pause=800&color=AE0001&center=true&vCenter=true&width=640&lines=Blessy+Mol+Charls;Computer+Science+%C3%97+AI;Building+things+with+code;Brewing+questionable+ideas;Teaching+computers+a+little+magic;Currently+casting%3A+Wizard+Chess" alt="Typing animation">
+<img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=20&duration=2500&pause=800&color=AE0001&center=true&vCenter=true&width=640&lines=Blessy+Mol+Charls;Computer+Science+%C3%97+AI;Building+things+with+code;Brewing+questionable+ideas;Teaching+computers+a+little+magic" alt="Typing animation">
 
 <br><br>
 
