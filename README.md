@@ -30,7 +30,7 @@
 ╭──────────────────────────────────────────────────────────────╮
 │                                                              │
 │  NAME              Blessy Mol Charls                         │
-│  HOUSE             Ravenclaw                 │
+│  HOUSE             Ravenclaw                                 │
 │  SPECIALIZATION    Computer Science × AI                     │
 │  CGPA              8.97 / 10                                 │
 │  CURRENT QUEST     Building things that start with           │
@@ -99,6 +99,76 @@ into an interactive browser-based chessboard using chess.js and chessboard.js.
 Top 6 at College &amp; Top 200 Overall at TinkerHack 3.0.
 
 `JavaScript` · `chess.js` · `chessboard.js` · `Blender` · `3D Modeling`
+
+<br>
+
+---
+
+<table>
+<tr>
+<td width="50%" align="center">
+
+<a href="https://github.com/Blessymolcharls/wizards-duel">
+<picture>
+  <source media="(prefers-color-scheme: dark)"  srcset="assets/card-wizards-duel-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="assets/card-wizards-duel-light.svg">
+  <img src="assets/card-wizards-duel-dark.svg" width="360" alt="Wizards Duel project card">
+</picture>
+</a>
+
+**02 — WIZARDS DUEL**
+
+Turning hand gestures into wizard battles — because using a mouse wasn't dramatic enough.
+
+`Python` · `MediaPipe` · `Computer Vision`
+
+</td>
+<td width="50%" align="center">
+
+<a href="https://github.com/Blessymolcharls/StudySync">
+<picture>
+  <source media="(prefers-color-scheme: dark)"  srcset="assets/card-StudySync-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="assets/card-StudySync-light.svg">
+  <img src="assets/card-StudySync-dark.svg" width="360" alt="StudySync project card">
+</picture>
+</a>
+
+**03 — STUDYSYNC**
+
+Role-based study management desktop app. Task scheduling, PDF sharing, team access.
+Led a 4-member team.
+
+`Java` · `Java Swing` · `JDBC` · `MariaDB`
+
+</td>
+</tr>
+<tr>
+<td width="50%" align="center">
+
+<a href="https://github.com/Blessymolcharls/VendorVerse">
+<picture>
+  <source media="(prefers-color-scheme: dark)"  srcset="assets/card-VendorVerse-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="assets/card-VendorVerse-light.svg">
+  <img src="assets/card-VendorVerse-dark.svg" width="360" alt="VendorVerse project card">
+</picture>
+</a>
+
+**04 — VENDORVERSE**
+
+Full-stack vendor management platform. REST APIs, authentication, dynamic data rendering.
+
+`JavaScript` · `Node.js` · `Express.js`
+
+</td>
+<td width="50%" align="center">
+
+*More in the vault.*
+
+[View all repositories →](https://github.com/Blessymolcharls?tab=repositories)
+
+</td>
+</tr>
+</table>
 
 </div>
 
