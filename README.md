@@ -18,7 +18,7 @@
 
 <br>
 
-> *"Mischief Managed"*
+*“I solemnly swear that I am up to no good.”*
 
 </div>
 
@@ -174,48 +174,6 @@ Full-stack vendor management platform. REST APIs, authentication, dynamic data r
 
 ---
 
-## `FORBIDDEN EXPERIMENTS`
-
-*Some ideas should probably have stayed in the notebook.*
-
-<br>
-
-**JANSETU**
-
-AI-powered civic-tech platform designed to remove bureaucratic black boxes and make public-service workflows transparent, understandable, and citizen-friendly.
-
-`Next.js` · `TypeScript` · `AI` · `MongoDB`
-
-<br>
-
-**MEDALERT**
-
-An ESP32 smart pillbox that talks to a Flutter app over Bluetooth Low Energy.
-Tracks medication schedules. Sends real-time alerts.
-Muggle engineering dressed up to look slightly magical.
-
-`ESP32` · `C++` · `Flutter` · `Dart` · `BLE` · `Hive`
-
-<br>
-
-**BOOKISH**
-
-A library management system with a **C CGI backend** — because apparently someone needed to prove
-that C can serve JSON endpoints. CRUD, search, borrow and return workflows included.
-
-`C` · `CGI` · `JavaScript` · `HTML` · `CSS`
-
-<br>
-
-**CACHE ANALYSIS**
-
-gem5-based computer architecture experiment dissecting cache behaviour.
-Graphs included. Conclusions were interesting. Sleep was not.
-
-`Python` · `C` · `gem5` · `pandas` · `NumPy` · `Matplotlib`
-
----
-
 ## `THE DAILY PROPHET`
 
 <div align="center">
@@ -244,18 +202,6 @@ Graphs included. Conclusions were interesting. Sleep was not.
 
 </div>
 
-
----
-
-## `ACHIEVEMENTS`
-
-| Honour | Details |
-|---|---|
-| GHCI 2025 Scholar | Grace Hopper Celebration India 2025 |
-| TinkerHack 3.0 | Top 200 Overall · Top 6 at College |
-| TinkerHack 4.0 | Top 500 Overall · Top 10 at College |
-| ICPC AlgoQueen | Rank 1009 |
-
 ---
 
 <div align="center">
@@ -266,7 +212,7 @@ Graphs included. Conclusions were interesting. Sleep was not.
 
 <br>
 
-> *"Mischief Managed"*
+*“Mischief managed.”*
 
 <br>
 
