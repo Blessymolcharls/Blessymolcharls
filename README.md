@@ -15,6 +15,7 @@
 [![GitHub](https://img.shields.io/badge/GitHub-Blessymolcharls-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Blessymolcharls)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Blessy_Mol_Charls-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/blessy-mol-charls)
 [![Email](https://img.shields.io/badge/Email-blessymolcharls%40gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:blessymolcharls@gmail.com)
+[![Profile Views](https://komarev.com/ghpvc/?username=Blessymolcharls&label=PROFILE+VIEWS&style=for-the-badge&color=0A66C2)](https://github.com/Blessymolcharls)
 
 <br>
 
@@ -124,16 +125,16 @@ Top 6 at College &amp; Top 200 Overall at TinkerHack 3.0.
 
 ---
 
-## `THE BASILISK`
+## `MAGICAL PAC-MAN (THE BASILISK)`
 
 *You probably shouldn't have opened this.*
 
 <div align="center">
 
 <picture>
-  <source media="(prefers-color-scheme: dark)"  srcset="https://raw.githubusercontent.com/Blessymolcharls/Blessymolcharls/output/snake-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/Blessymolcharls/Blessymolcharls/output/snake.svg">
-  <img src="https://raw.githubusercontent.com/Blessymolcharls/Blessymolcharls/output/snake-dark.svg" alt="GitHub contribution snake">
+  <source media="(prefers-color-scheme: dark)"  srcset="https://raw.githubusercontent.com/Blessymolcharls/Blessymolcharls/output/pacman-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/Blessymolcharls/Blessymolcharls/output/pacman.svg">
+  <img src="https://raw.githubusercontent.com/Blessymolcharls/Blessymolcharls/output/pacman-dark.svg" alt="Magical Pac-Man contribution animation">
 </picture>
 
 </div>

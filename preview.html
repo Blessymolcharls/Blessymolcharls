@@ -21,22 +21,41 @@
 </style>
 
 <h1>profile assets — local preview</h1>
-<p class="missing">Each asset is shown against both a dark and a light card, the way GitHub will render it.</p>
+<p class="missing">Comparing Magical Pac-Man and Original Snake animations with identical contribution mechanics.</p>
+
+<h2>Magical Pac-Man (The Basilisk)</h2>
+<div class="row">
+  <div class="card"><span class="tag">pacman-dark.svg (on dark)</span>
+    <img src="dist/pacman-dark.svg" width="880" onerror="this.replaceWith(Object.assign(document.createElement('p'),{className:'missing',textContent:'not generated yet — run pacman.py'}))"></div>
+  <div class="card light"><span class="tag" style="color:#57606a">pacman.svg (on light)</span>
+    <img src="dist/pacman.svg" width="880" onerror="this.replaceWith(Object.assign(document.createElement('p'),{className:'missing',textContent:'not generated yet'}))"></div>
+</div>
+
+<h2>Side-by-Side: Magical Pac-Man GIF vs Original Snake GIF</h2>
+<div class="row">
+  <div class="card"><span class="tag">pacman.gif (Magical Pac-Man)</span>
+    <img src="dist/pacman.gif" width="425" onerror="this.replaceWith(Object.assign(document.createElement('p'),{className:'missing',textContent:'pacman.gif missing'}))"></div>
+  <div class="card"><span class="tag">snake.gif (Original Snake)</span>
+    <img src="dist/snake.gif" width="425" onerror="this.replaceWith(Object.assign(document.createElement('p'),{className:'missing',textContent:'snake.gif missing'}))"></div>
+</div>
+
+<h2>Original Snake Reference</h2>
+<div class="row">
+  <div class="card"><span class="tag">snake-dark.svg (on dark)</span>
+    <img src="dist/snake-dark.svg" width="880" onerror="this.replaceWith(Object.assign(document.createElement('p'),{className:'missing',textContent:'not generated yet'}))"></div>
+</div>
 
 <h2>portrait <button id="replay">replay the load-in</button></h2>
 <div class="row">
   <div class="card"><span class="tag">portrait.svg (on dark)</span>
-    <img class="portrait" src="assets/portrait.svg" width="300" onerror="this.replaceWith(Object.assign(document.createElement('p'),{className:'missing',textContent:'not generated yet — run dotify.py'}))"></div>
+    <img class="portrait" src="assets/portrait.svg" width="300" onerror="this.replaceWith(Object.assign(document.createElement('p'),{className:'missing',textContent:'not generated yet'}))"></div>
   <div class="card light"><span class="tag" style="color:#57606a">portrait.svg (on light)</span>
     <img class="portrait" src="assets/portrait.svg" width="300" onerror="this.replaceWith(Object.assign(document.createElement('p'),{className:'missing',textContent:'not generated yet'}))"></div>
 </div>
 <script>
-  // The row-reveal runs once per image load, so force a fresh load to rewatch it.
   document.getElementById('replay').onclick = () => {
     document.querySelectorAll('img.portrait').forEach(img => {
       img.src = 'assets/portrait.svg?' + Date.now();
     });
   };
 </script>
-
-

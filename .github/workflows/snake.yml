@@ -1,4 +1,4 @@
-name: Snake
+name: Snake & Magical Pac-Man
 
 on:
   schedule:
@@ -6,6 +6,10 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
+    paths:
+      - "scripts/pacman.py"
+      - ".github/workflows/snake.yml"
+      - "README.md"
 
 permissions:
   contents: write
@@ -14,7 +18,19 @@ jobs:
   snake:
     runs-on: ubuntu-latest
     steps:
-      - name: Generate snake animations
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install pillow
+
+      - name: Generate original snake animations
         uses: Platane/snk@v3
         id: snake
         with:
@@ -24,8 +40,14 @@ jobs:
             dist/snake-dark.svg?palette=github-dark
             dist/snake.gif?color_snake=#39d353&color_dots=#161b22,#0e4429,#006d32,#26a641,#39d353
 
-      # The SVGs are pushed to an orphan `output` branch so they never clutter
-      # main. The README points at raw.githubusercontent.com/.../output/...
+      - name: Generate Magical Pac-Man animations
+        run: |
+          python scripts/pacman.py \
+            --user "${{ github.repository_owner }}" \
+            --out dist \
+            --format all
+
+      # The animations are pushed to an orphan output branch so they never clutter main.
       - name: Push to the output branch
         uses: crazy-max/ghaction-github-pages@v4
         with:
