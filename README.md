@@ -125,7 +125,7 @@ Top 6 at College &amp; Top 200 Overall at TinkerHack 3.0.
 
 ---
 
-## `MAGICAL PAC-MAN (THE BASILISK)`
+## `THE BASILISK`
 
 *You probably shouldn't have opened this.*
 
@@ -134,7 +134,7 @@ Top 6 at College &amp; Top 200 Overall at TinkerHack 3.0.
 <picture>
   <source media="(prefers-color-scheme: dark)"  srcset="https://raw.githubusercontent.com/Blessymolcharls/Blessymolcharls/output/pacman-dark.svg">
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/Blessymolcharls/Blessymolcharls/output/pacman.svg">
-  <img src="https://raw.githubusercontent.com/Blessymolcharls/Blessymolcharls/output/pacman-dark.svg" alt="Magical Pac-Man contribution animation">
+  <img src="https://raw.githubusercontent.com/Blessymolcharls/Blessymolcharls/output/pacman-dark.svg" alt="The Basilisk contribution animation">
 </picture>
 
 </div>
