@@ -5,10 +5,11 @@ Target: Blessymolcharls/Blessymolcharls
 
 Preserves 100% of the original Platane/snk Snake animation mechanics:
 - Authentic GitHub contribution calendar & intensity levels (levels 0-4)
-- 369 grid cells, exact weekday alignment
-- True consumption mechanics: active contribution cells change state from active green to empty #161b22
-  as the character passes over them, exactly like the original Snake game
-- Single Golden Snitch Pac-Man replaces the snake body (s0, s1, s2, s3)
+- Exact weekday alignment and grid geometry
+- Dynamic animation duration extracted directly from Platane/snk output (never hardcoded)
+- True consumption mechanics: active contribution cells vanish instantly into Pac-Man's
+  mouth as the jaws contact them, perfectly synchronized across all loops with zero timing drift
+- Single Golden Snitch Pac-Man replaces the snake body
 - Rotates dynamically to face the movement direction
 - Animated chomp jaws & delicate golden wings
 - Progress bars at the bottom grow as contributions are consumed
@@ -68,15 +69,24 @@ def get_snake_svg_source(out_dir, theme="dark"):
 def transform_snake_to_pacman_svg(snake_svg_content, theme="dark"):
     """
     Transforms Platane/snk SVG into Magical Pac-Man SVG:
-    1. Replaces snake rects (s0, s1, s2, s3) with the Golden Snitch Pac-Man character.
-    2. Modifies s0 movement keyframes to include direction rotation (0, 90, 180, 270 deg).
-    3. Retains all 369 contribution cells, exact 5-level green intensity, and eaten cell keyframes.
-    4. Preserves progress bars at the bottom.
+    1. Extracts the exact animation duration dynamically (e.g. 26700ms, 27500ms) to ensure
+       zero timing drift across endless loops.
+    2. Replaces snake rects (s0, s1, s2, s3) with the Golden Snitch Pac-Man character.
+    3. Retimes cell disappearance to the exact instant Pac-Man's mouth contacts each cell
+       so dots vanish cleanly into Pac-Man's jaws rather than lagging behind.
+    4. Modifies movement keyframes to rotate Pac-Man towards the travel direction.
+    5. Synchronizes progress bars at the bottom with the mouth-contact timing.
     """
     css_m = re.search(r'<style>(.*?)</style>', snake_svg_content, re.DOTALL)
     if not css_m:
         raise ValueError("Could not find <style> in SVG")
     css = css_m.group(1)
+
+    # Extract dynamic animation duration (e.g. 27500ms, 26700ms)
+    dur_m = re.search(r'animation:[^;]*?([0-9]+)ms', css)
+    if not dur_m:
+        raise ValueError("Could not find animation duration in snake SVG CSS")
+    duration_ms = int(dur_m.group(1))
 
     s0_m = re.search(r'@keyframes s0\{(.*?)\}\.s', css)
     if not s0_m:
@@ -94,6 +104,22 @@ def transform_snake_to_pacman_svg(snake_svg_content, theme="dark"):
             pts.append((p, tx, ty))
 
     pts.sort(key=lambda x: x[0])
+
+    def get_pos_at(pct):
+        for i in range(len(pts) - 1):
+            p1, x1, y1 = pts[i]
+            p2, x2, y2 = pts[i+1]
+            if p1 <= pct <= p2:
+                frac = (pct - p1) / (p2 - p1) if p2 > p1 else 0
+                dx = x2 - x1
+                dy = y2 - y1
+                if dx > 0: ang = 0
+                elif dy > 0: ang = 90
+                elif dx < 0: ang = 180
+                elif dy < 0: ang = 270
+                else: ang = 0
+                return (x1 + frac * dx, y1 + frac * dy, ang)
+        return (pts[-1][1], pts[-1][2], 0)
 
     # Build rotated keyframes for Pac-Man
     pacman_kf = []
@@ -135,7 +161,7 @@ def transform_snake_to_pacman_svg(snake_svg_content, theme="dark"):
 </linearGradient>
 </defs>"""
 
-    # Pac-Man CSS animations
+    # Pac-Man CSS animations with dynamic duration matching the grid cells exactly
     pacman_css = f"""
 /* Golden Snitch Pac-Man character */
 @keyframes pacman-motion {{
@@ -143,7 +169,7 @@ def transform_snake_to_pacman_svg(snake_svg_content, theme="dark"):
 }}
 .pacman-runner {{
   transform-origin: 8px 8px;
-  animation: pacman-motion 26700ms linear infinite;
+  animation: pacman-motion {duration_ms}ms linear infinite;
 }}
 @keyframes chomp-upper {{
   0%, 100% {{ transform: rotate(0deg); }}
@@ -206,6 +232,49 @@ def transform_snake_to_pacman_svg(snake_svg_content, theme="dark"):
         new_css = new_css.replace('--c3:#0f6d31', '--c3:#26a641')
         new_css = new_css.replace('--c4:#00c647', '--c4:#39d353')
 
+    # Retime cells to mouth contact:
+    # Platane/snk sets t2 to when the snake head center (tx+8, ty+8) reaches cell center (cx+6, cy+6).
+    # Pac-Man's mouth is at the leading edge (radius 7px ahead in motion direction).
+    # Disappearing when the mouth contacts the cell eliminates the visible lag where the cell
+    # lingers after being bitten.
+    cells = re.findall(r'<rect class="c(?:\s+([^"]+))?"\s+x="([0-9.]+)"\s+y="([0-9.]+)"', snake_svg_content)
+    cell_map = {}
+    for cls, x, y in cells:
+        if cls and 'c' in cls:
+            cell_map[cls] = (float(x), float(y))
+
+    cell_kfs = re.findall(r'@keyframes (c[0-9a-z]+)\{([0-9.]+)%\{fill:var\((--c[1-4])\)\}([0-9.]+)%,100%\{fill:var\(--ce\)\}', css)
+
+    for c_name, t1_str, var, t2_str in cell_kfs:
+        if c_name not in cell_map:
+            continue
+        cx, cy = cell_map[c_name]
+        cell_cx = cx + 6
+        cell_cy = cy + 6
+        t2 = float(t2_str)
+
+        mouth_t = t2
+        for step in range(int(t2 * 1000), int(max(0, t2 - 1.5) * 1000), -5):
+            p = step / 1000.0
+            tx, ty, ang = get_pos_at(p)
+            rad = math.radians(ang)
+            mx = tx + 8 + 7 * math.cos(rad)
+            my = ty + 8 + 7 * math.sin(rad)
+            if math.hypot(mx - cell_cx, my - cell_cy) <= 6.0:
+                mouth_t = p
+
+        new_t1 = max(0.0, mouth_t - 0.02)
+        new_t2 = mouth_t
+
+        old_c_pattern = f"@keyframes {c_name}{{{t1_str}%{{fill:var({var})}}{t2_str}%,100%{{fill:var(--ce)}}}}"
+        new_c_pattern = f"@keyframes {c_name}{{{new_t1:.2f}%{{fill:var({var})}}{new_t2:.2f}%,100%{{fill:var(--ce)}}}}"
+        new_css = new_css.replace(old_c_pattern, new_c_pattern)
+
+        # Retime progress bars (u) so they advance at the exact same moment
+        new_css = new_css.replace(f"{t1_str}%{{transform:", f"{new_t1:.2f}%{{transform:")
+        new_css = new_css.replace(f"{t2_str}%,", f"{new_t2:.2f}%,")
+        new_css = new_css.replace(f",{t1_str}%{{transform:", f",{new_t1:.2f}%{{transform:")
+
     new_css += pacman_css
 
     # Replace CSS in SVG
@@ -222,10 +291,11 @@ def transform_snake_to_pacman_svg(snake_svg_content, theme="dark"):
 
 def render_pacman_gif(snake_svg_content, out_gif_path):
     """
-    Renders the exact 267 frames corresponding to Platane/snk's 26.7s loop:
-    - Active cells remain green until reached by Pac-Man, then become empty #161b22
+    Renders the exact animated GIF corresponding to Platane/snk's loop:
+    - Dynamic frame count and duration matching snake_svg_content exactly
+    - Active cells remain green until chomped by Pac-Man's mouth, then become empty #161b22
     - Pac-Man chomps and rotates along the exact motion vector
-    - Progress bars fill at the bottom
+    - Progress bars fill dynamically at the bottom
     """
     if not HAS_PIL:
         print("[-] Pillow is not installed. Skipping GIF generation.")
@@ -234,17 +304,72 @@ def render_pacman_gif(snake_svg_content, out_gif_path):
     css_m = re.search(r'<style>(.*?)</style>', snake_svg_content, re.DOTALL)
     css = css_m.group(1)
 
-    # 1. Eaten cells timing
+    dur_m = re.search(r'animation:[^;]*?([0-9]+)ms', css)
+    duration_ms = int(dur_m.group(1)) if dur_m else 26700
+    total_steps = int(round(duration_ms / 100.0))
+
+    # Path waypoints
+    s0_m = re.search(r'@keyframes s0\{(.*?)\}\.s', css)
+    entries = re.findall(r'([0-9.,%]+)\{transform:translate\((-?[0-9.]+)px,(-?[0-9.]+)px\)\}', s0_m.group(1))
+
+    key_pts = []
+    for pct_str, tx_str, ty_str in entries:
+        tx = float(tx_str)
+        ty = float(ty_str)
+        pcts = [float(p.replace('%', '')) for p in pct_str.split(',') if p]
+        for p in pcts:
+            key_pts.append((p, tx, ty))
+    key_pts.sort(key=lambda p: p[0])
+
+    def get_pos(pct):
+        for i in range(len(key_pts) - 1):
+            p1, x1, y1 = key_pts[i]
+            p2, x2, y2 = key_pts[i+1]
+            if p1 <= pct <= p2:
+                frac = (pct - p1) / max(1e-5, (p2 - p1))
+                dx = x2 - x1
+                dy = y2 - y1
+                if dx > 0: ang = 0
+                elif dy > 0: ang = 90
+                elif dx < 0: ang = 180
+                elif dy < 0: ang = 270
+                else: ang = 0
+                return (x1 + frac * dx, y1 + frac * dy, ang)
+        return (key_pts[-1][1], key_pts[-1][2], 0)
+
+    # Map cells
+    cells = re.findall(r'<rect class="c(?:\s+([^"]+))?"\s+x="([0-9.]+)"\s+y="([0-9.]+)"', snake_svg_content)
+    cell_map = {}
+    for cls, x, y in cells:
+        if cls and 'c' in cls:
+            cell_map[cls] = (float(x), float(y))
+
+    # Eaten cells timing matching mouth contact
     eaten_cells = {}
-    for m in re.finditer(r'@keyframes (c[a-z0-9]+)\{([0-9.]+)%\{fill:var\((--c[1-4])\)\}', css):
+    for m in re.finditer(r'@keyframes (c[0-9a-z]+)\{([0-9.]+)%\{fill:var\((--c[1-4])\)\}([0-9.]+)%,100%\{fill:var\(--ce\)\}', css):
         c_name = m.group(1)
-        pct = float(m.group(2))
         lvl = int(m.group(3)[-1])
-        step_idx = int(round((pct / 100.0) * 267))
+        t2 = float(m.group(4))
+
+        if c_name in cell_map:
+            cx, cy = cell_map[c_name]
+            cell_cx = cx + 6
+            cell_cy = cy + 6
+            mouth_t = t2
+            for step in range(int(t2 * 1000), int(max(0, t2 - 1.5) * 1000), -5):
+                p = step / 1000.0
+                tx, ty, ang = get_pos(p)
+                rad = math.radians(ang)
+                mx = tx + 8 + 7 * math.cos(rad)
+                my = ty + 8 + 7 * math.sin(rad)
+                if math.hypot(mx - cell_cx, my - cell_cy) <= 6.0:
+                    mouth_t = p
+            step_idx = int(round((mouth_t / 100.0) * total_steps))
+        else:
+            step_idx = int(round((t2 / 100.0) * total_steps))
+
         eaten_cells[c_name] = (step_idx, lvl)
 
-    # 2. Map cells
-    cells = re.findall(r'<rect class="c(?:\s+([^"]+))?" x="([0-9.]+)" y="([0-9.]+)"', snake_svg_content)
     cell_list = []
     for c_cls, x_str, y_str in cells:
         x = float(x_str)
@@ -265,43 +390,11 @@ def render_pacman_gif(snake_svg_content, out_gif_path):
             "eaten_step": step_idx
         })
 
-    # 3. Path waypoints
-    s0_m = re.search(r'@keyframes s0\{(.*?)\}\.s', css)
-    entries = re.findall(r'([0-9.,%]+)\{transform:translate\((-?[0-9.]+)px,(-?[0-9.]+)px\)\}', s0_m.group(1))
-
-    key_pts = []
-    for pct_str, tx_str, ty_str in entries:
-        tx = float(tx_str)
-        ty = float(ty_str)
-        pcts = [float(p.replace('%', '')) for p in pct_str.split(',') if p]
-        for p in pcts:
-            key_pts.append((p, tx, ty))
-    key_pts.sort(key=lambda p: p[0])
-
+    # Precalculate step data for each frame
     step_data = []
-    for s in range(267):
-        p = (s / 267.0) * 100.0
-        found = False
-        for i in range(len(key_pts) - 1):
-            p1, x1, y1 = key_pts[i]
-            p2, x2, y2 = key_pts[i+1]
-            if p1 <= p <= p2 or (i == len(key_pts) - 2 and p >= p2):
-                frac = (p - p1) / max(1e-5, (p2 - p1))
-                frac = max(0.0, min(1.0, frac))
-                tx = x1 + frac * (x2 - x1)
-                ty = y1 + frac * (y2 - y1)
-                dx = x2 - x1
-                dy = y2 - y1
-                if dx > 0: ang = 0
-                elif dy > 0: ang = 90
-                elif dx < 0: ang = 180
-                elif dy < 0: ang = 270
-                else: ang = 0
-                step_data.append((tx, ty, ang))
-                found = True
-                break
-        if not found:
-            step_data.append((key_pts[-1][1], key_pts[-1][2], 0))
+    for s in range(total_steps):
+        p = (s / float(total_steps)) * 100.0
+        step_data.append(get_pos(p))
 
     level_colors = {
         0: (22, 27, 34),
@@ -311,10 +404,22 @@ def render_pacman_gif(snake_svg_content, out_gif_path):
         4: (57, 211, 83)
     }
 
+    # Dynamically extract progress bar geometry from SVG
+    u_rects = re.findall(r'<rect class="u\s+u([0-9]+)"[^>]*height="([0-9.]+)"[^>]*width="([0-9.]+)"[^>]*x="([0-9.]+)"', snake_svg_content)
+    u_offsets = []
+    for u_idx, u_h, u_w, u_x in u_rects:
+        lvl = int(u_idx) + 1
+        u_offsets.append((float(u_x), float(u_w), lvl))
+
+    total_by_lvl = {}
+    for c in cell_list:
+        if c["level"] > 0:
+            total_by_lvl[c["level"]] = total_by_lvl.get(c["level"], 0) + 1
+
     frames = []
     WIDTH, HEIGHT = 880, 206
 
-    for f_idx in range(267):
+    for f_idx in range(total_steps):
         img = Image.new("RGB", (WIDTH, HEIGHT), (13, 17, 23))
         draw = ImageDraw.Draw(img)
 
@@ -331,14 +436,13 @@ def render_pacman_gif(snake_svg_content, out_gif_path):
 
         # 2. Progress bars at y=144
         eaten_by_lvl = {1: 0, 2: 0, 3: 0, 4: 0}
-        total_by_lvl = {1: 49, 2: 5, 3: 4, 4: 2}
         for c in cell_list:
             if c["level"] > 0 and c["eaten_step"] != -1 and f_idx >= c["eaten_step"]:
                 eaten_by_lvl[c["level"]] += 1
 
-        u_offsets = [(0.0, 693.1, 1), (692.5, 71.3, 2), (763.2, 57.1, 3), (819.7, 28.9, 4)]
         for ux, uw, ulvl in u_offsets:
-            frac = eaten_by_lvl[ulvl] / max(1, total_by_lvl[ulvl])
+            tot = total_by_lvl.get(ulvl, 1)
+            frac = eaten_by_lvl.get(ulvl, 0) / max(1, tot)
             if frac > 0:
                 cur_w = uw * frac
                 draw.rectangle([ux, 144, ux + cur_w, 144 + 12], fill=level_colors[ulvl])
@@ -366,15 +470,16 @@ def render_pacman_gif(snake_svg_content, out_gif_path):
 
         frames.append(img)
 
+    frame_dur = int(round(duration_ms / total_steps))
     frames[0].save(
         out_gif_path,
         save_all=True,
         append_images=frames[1:],
-        duration=100,
+        duration=frame_dur,
         loop=0,
         optimize=False
     )
-    print(f"[+] Saved animated GIF to {out_gif_path} ({len(frames)} frames, {os.path.getsize(out_gif_path)} bytes).")
+    print(f"[+] Saved animated GIF to {out_gif_path} ({len(frames)} frames, duration={duration_ms}ms, {os.path.getsize(out_gif_path)} bytes).")
 
 
 def main():
