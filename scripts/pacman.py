@@ -241,9 +241,12 @@ def transform_snake_to_pacman_svg(snake_svg_content, theme="dark"):
     cell_map = {}
     for cls, x, y in cells:
         if cls and 'c' in cls:
-            cell_map[cls] = (float(x), float(y))
+            cell_map[cls.strip()] = (float(x), float(y))
 
     cell_kfs = re.findall(r'@keyframes (c[0-9a-z]+)\{([0-9.]+)%\{fill:var\((--c[1-4])\)\}([0-9.]+)%,100%\{fill:var\(--ce\)\}', css)
+
+    cell_new_timing = {}
+    old_pct_to_new = {}
 
     for c_name, t1_str, var, t2_str in cell_kfs:
         if c_name not in cell_map:
@@ -266,14 +269,37 @@ def transform_snake_to_pacman_svg(snake_svg_content, theme="dark"):
         new_t1 = max(0.0, mouth_t - 0.02)
         new_t2 = mouth_t
 
-        old_c_pattern = f"@keyframes {c_name}{{{t1_str}%{{fill:var({var})}}{t2_str}%,100%{{fill:var(--ce)}}}}"
-        new_c_pattern = f"@keyframes {c_name}{{{new_t1:.2f}%{{fill:var({var})}}{new_t2:.2f}%,100%{{fill:var(--ce)}}}}"
-        new_css = new_css.replace(old_c_pattern, new_c_pattern)
+        cell_new_timing[c_name] = (new_t1, new_t2, var)
+        old_pct_to_new[t1_str] = f"{new_t1:.2f}"
+        old_pct_to_new[t2_str] = f"{new_t2:.2f}"
 
-        # Retime progress bars (u) so they advance at the exact same moment
-        new_css = new_css.replace(f"{t1_str}%{{transform:", f"{new_t1:.2f}%{{transform:")
-        new_css = new_css.replace(f"{t2_str}%,", f"{new_t2:.2f}%,")
-        new_css = new_css.replace(f",{t1_str}%{{transform:", f",{new_t1:.2f}%{{transform:")
+    # 1. Atomic regex replacement of cell keyframes:
+    # Replaces entire @keyframes block per cell to avoid substring replacement collisions
+    def replace_cell_kf(m):
+        c_name = m.group(1)
+        if c_name in cell_new_timing:
+            t1, t2, var = cell_new_timing[c_name]
+            return f"@keyframes {c_name}{{{t1:.2f}%{{fill:var({var})}}{t2:.2f}%,100%{{fill:var(--ce)}}}}"
+        return m.group(0)
+
+    new_css = re.sub(
+        r'@keyframes (c[0-9a-z]+)\{[0-9.]+%(?:\{fill:var\(--c[1-4]\)\})[0-9.]*%,100%\{fill:var\(--ce\)\}\}',
+        replace_cell_kf,
+        new_css
+    )
+
+    # 2. Tokenized replacement of progress bar keyframes u0-u3:
+    # Only replaces whole percentage tokens inside @keyframes u0-u3 blocks
+    def replace_u_block(m):
+        u_name = m.group(1)
+        body = m.group(2)
+        def repl_pct(pm):
+            pct = pm.group(1)
+            return old_pct_to_new.get(pct, pct) + '%'
+        new_body = re.sub(r'([0-9.]+)%', repl_pct, body)
+        return f"@keyframes {u_name}{{{new_body}}}"
+
+    new_css = re.sub(r'@keyframes (u[0-3])\{(.*?100%\{transform:scale\(1\.000,1\)\})\}', replace_u_block, new_css)
 
     new_css += pacman_css
 
@@ -342,7 +368,7 @@ def render_pacman_gif(snake_svg_content, out_gif_path):
     cell_map = {}
     for cls, x, y in cells:
         if cls and 'c' in cls:
-            cell_map[cls] = (float(x), float(y))
+            cell_map[cls.strip()] = (float(x), float(y))
 
     # Eaten cells timing matching mouth contact
     eaten_cells = {}
